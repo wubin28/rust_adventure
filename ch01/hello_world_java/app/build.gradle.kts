@@ -41,3 +41,10 @@ tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+// *** 下面是新增的部分，确保在生成的 JAR 文件中包含主类信息 ***
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "org.example.App"
+    }
+}
