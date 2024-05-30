@@ -28,6 +28,11 @@ target_include_directories(
 
 target_compile_features(dicey_temperatures_cpp_lib PUBLIC cxx_std_20)
 
+# ---- To build C++20 code
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # ---- Declare executable ----
 
 add_executable(dicey_temperatures_cpp_exe source/main.cpp)
