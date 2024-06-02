@@ -17,6 +17,20 @@ public class App {
     Scanner scanner = new Scanner(System.in);
     String guess = scanner.nextLine();
 
-    System.out.println("You guessed: " + guess);
+    int guessInt;
+    try {
+      guessInt = Integer.parseInt(guess.trim());
+    } catch (NumberFormatException e) {
+      System.out.println("Please type a number!");
+      return;
+    }
+
+    System.out.println("You guessed: " + guessInt);
+
+    if (guessInt < sumOfTwoDice || guessInt > sumOfTwoDice) {
+      System.out.println("You guessed it wrong on the first try");
+    } else {
+      System.out.println("You win!");
+    }
   }
 }
