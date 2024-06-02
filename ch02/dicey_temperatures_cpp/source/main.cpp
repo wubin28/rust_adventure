@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <stdexcept>
 #include <string>
 
 auto main() -> int
@@ -20,7 +21,21 @@ auto main() -> int
   std::string guess;
   std::getline(std::cin, guess);
 
-  std::cout << "You guessed: " << guess << std::endl;
+  int guess_number;
+  try {
+    guess_number = std::stoi(guess);
+  } catch (const std::invalid_argument&) {
+    std::cerr << "Please type a number!" << std::endl;
+    return 1;
+  }
+
+  std::cout << "You guessed: " << guess_number << std::endl;
+
+  if (guess_number < sum_of_two_dice || guess_number > sum_of_two_dice) {
+    std::cout << "You guessed it wrong on the first try" << std::endl;
+  } else {
+    std::cout << "You win!" << std::endl;
+  }
 
   return 0;
 }
