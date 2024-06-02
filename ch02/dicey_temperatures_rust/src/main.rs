@@ -9,20 +9,46 @@ fn main() {
 
     println!("The sum of two dice is: {sum_of_two_dice}");
 
-    println!("Please input your guess (between 2 and 12).");
+    let mut previous_guess: Option<u32> = None;
 
-    let mut guess = String::new();
+    loop {
+        println!("Please input your guess (between 2 and 12).");
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
+        let mut guess = String::new();
 
-    let guess: u32 = guess.trim().parse().expect("Please type a number!");
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
 
-    println!("You guessed: {guess}");
+        let guess: u32 = guess.trim().parse().expect("Please type a number!");
 
-    match guess.cmp(&sum_of_two_dice) {
-        Ordering::Less | Ordering::Greater => println!("You guessed it wrong on the first try"),
-        Ordering::Equal => println!("You win!"),
+        println!("You guessed: {guess}");
+
+        match previous_guess {
+            None => match guess.cmp(&sum_of_two_dice) {
+                Ordering::Less | Ordering::Greater => {
+                    println!("You guessed it wrong on the first try.");
+                    previous_guess = Some(guess);
+                }
+                Ordering::Equal => println!("You win!"),
+            },
+            Some(prev) => match guess.cmp(&sum_of_two_dice) {
+                Ordering::Less | Ordering::Greater => {
+                    let previous_diff = (prev as i32 - sum_of_two_dice as i32).abs();
+                    let current_diff = (guess as i32 - sum_of_two_dice as i32).abs();
+
+                    if current_diff < previous_diff {
+                        println!("Hotter.");
+                    } else if current_diff > previous_diff {
+                        println!("Colder.");
+                    } else {
+                        println!("Neither cold nor hot.");
+                    }
+
+                    previous_guess = Some(guess);
+                }
+                Ordering::Equal => println!("You win!"),
+            },
+        }
     }
 }
