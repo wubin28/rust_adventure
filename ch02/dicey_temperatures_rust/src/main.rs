@@ -22,8 +22,7 @@ fn main() {
     println!("You guessed: {guess}");
 
     match guess.cmp(&sum_of_two_dice) {
-        Ordering::Less => println!("You guessed it wrong on the first try!"),
-        Ordering::Greater => println!("You guessed it wrong on the first try"),
+        Ordering::Less | Ordering::Greater => println!("You guessed it wrong on the first try"),
         Ordering::Equal => println!("You win!"),
     }
 }
