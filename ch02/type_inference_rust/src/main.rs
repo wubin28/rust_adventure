@@ -10,6 +10,6 @@ fn main() {
     let z = "Hello, World!";
 
     println!("The type of x is: {}", type_of(x)); // The type of x is: i32
-    println!("The type of y is: {}", type_of(y)); // The type of x is: f64
-    println!("The type of z is: {}", type_of(z)); // The type of x is: &str
+    println!("The type of y is: {}", type_of(y)); // The type of y is: f64
+    println!("The type of z is: {}", type_of(z)); // The type of z is: &str
 }
