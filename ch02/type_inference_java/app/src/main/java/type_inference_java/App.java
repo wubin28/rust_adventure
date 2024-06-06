@@ -4,11 +4,17 @@
 package type_inference_java;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+  public static void main(String[] args) {
+    var x = 5;
+    var y = 3.0;
+    var z = "Hello, World!";
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-    }
+    System.out.println("The type of x is: " + getType(x)); // The type of x is: Integer
+    System.out.println("The type of y is: " + getType(y)); // The type of y is: Double
+    System.out.println("The type of z is: " + getType(z)); // The type of z is: String
+  }
+
+  public static String getType(Object obj) {
+    return obj.getClass().getSimpleName();
+  }
 }
