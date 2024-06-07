@@ -1,5 +1,6 @@
 package dicey_temperatures_java;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -12,25 +13,48 @@ public class App {
 
     System.out.println("The sum of two dice is: " + sumOfTwoDice);
 
-    System.out.println("Please input your guess (between 2 and 12): ");
+    Optional<Integer> previousGuess = Optional.empty();
 
     Scanner scanner = new Scanner(System.in);
-    String guess = scanner.nextLine();
 
-    int guessInt;
-    try {
-      guessInt = Integer.parseInt(guess.trim());
-    } catch (NumberFormatException e) {
-      System.out.println("Please type a number!");
-      return;
-    }
+    while (true) {
+      System.out.println("Please input your guess (between 2 and 12): ");
 
-    System.out.println("You guessed: " + guessInt);
+      String guess = scanner.nextLine();
 
-    if (guessInt < sumOfTwoDice || guessInt > sumOfTwoDice) {
-      System.out.println("You guessed it wrong on the first try");
-    } else {
-      System.out.println("You win!");
+      int guessInt;
+      try {
+        guessInt = Integer.parseInt(guess.trim());
+      } catch (NumberFormatException e) {
+        System.out.println("Please type a number!");
+        return;
+      }
+
+      System.out.println("You guessed: " + guessInt);
+
+      if (previousGuess.isEmpty()) {
+        if (guessInt < sumOfTwoDice || guessInt > sumOfTwoDice) {
+          System.out.println("You guessed it wrong on the first try");
+        } else {
+          System.out.println("You win!");
+        }
+        previousGuess = Optional.of(guessInt);
+      } else {
+        int prev = previousGuess.get();
+        int previousDiff = Math.abs(prev - sumOfTwoDice);
+        int currentDiff = Math.abs(guessInt - sumOfTwoDice);
+
+        if (guessInt == sumOfTwoDice) {
+          System.out.println("You win!");
+        } else if (currentDiff < previousDiff) {
+          System.out.println("Hotter.");
+        } else if (currentDiff > previousDiff) {
+          System.out.println("Colder.");
+        } else {
+          System.out.println("Neither colder nor hotter.");
+        }
+        previousGuess = Optional.of(guessInt);
+      }
     }
   }
 }
