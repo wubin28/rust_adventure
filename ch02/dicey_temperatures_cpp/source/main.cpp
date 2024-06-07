@@ -1,4 +1,5 @@
 #include <iostream>
+#include <optional>
 #include <random>
 #include <stdexcept>
 #include <string>
@@ -16,26 +17,47 @@ auto main() -> int
 
   std::cout << "The sum of two dice is: " << sum_of_two_dice << std::endl;
 
-  std::cout << "Please input your guess (between 2 and 12): " << std::endl;
+  std::optional<int> previous_guess;
 
-  std::string guess;
-  std::getline(std::cin, guess);
+  while (true) {
+    std::cout << "Please input your guess (between 2 and 12): " << std::endl;
 
-  int guess_number;
-  try {
-    guess_number = std::stoi(guess);
-  } catch (const std::invalid_argument&) {
-    std::cerr << "Please type a number!" << std::endl;
-    return 1;
+    std::string guess;
+    std::getline(std::cin, guess);
+
+    int guess_number;
+    try {
+      guess_number = std::stoi(guess);
+    } catch (const std::invalid_argument&) {
+      std::cerr << "Please type a number!" << std::endl;
+      return 1;
+    }
+
+    std::cout << "You guessed: " << guess_number << std::endl;
+
+    if (!previous_guess) {
+      if (guess_number < sum_of_two_dice || guess_number > sum_of_two_dice) {
+        std::cout << "You guessed it wrong on the first try" << std::endl;
+      } else {
+        std::cout << "You win!" << std::endl;
+      }
+      previous_guess = guess_number;
+    } else {
+      int prev_guess = previous_guess.value();
+      int previous_diff = std::abs(prev_guess - sum_of_two_dice);
+      int current_diff = std::abs(guess_number - sum_of_two_dice);
+
+      if (guess_number == sum_of_two_dice) {
+        std::cout << "You win!" << std::endl;
+      } else if (current_diff < previous_diff) {
+        std::cout << "Hotter." << std::endl;
+      } else if (current_diff > previous_diff) {
+        std::cout << "Colder." << std::endl;
+      } else {
+        std::cout << "Neither colder nor hotter." << std::endl;
+      }
+      previous_guess = guess_number;
+    }
   }
-
-  std::cout << "You guessed: " << guess_number << std::endl;
-
-  if (guess_number < sum_of_two_dice || guess_number > sum_of_two_dice) {
-    std::cout << "You guessed it wrong on the first try" << std::endl;
-  } else {
-    std::cout << "You win!" << std::endl;
-  }
-
   return 0;
 }
