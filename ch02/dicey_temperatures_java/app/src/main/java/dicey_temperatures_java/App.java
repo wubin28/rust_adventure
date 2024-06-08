@@ -30,6 +30,11 @@ public class App {
         continue;
       }
 
+      if (guessInt < 2 || guessInt > 12) {
+        System.out.println("Please type a number between 2 and 12!");
+        continue;
+      }
+
       System.out.println("You guessed: " + guessInt);
 
       if (previousGuess.isEmpty()) {
