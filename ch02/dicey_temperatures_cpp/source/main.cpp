@@ -17,7 +17,7 @@ auto main() -> int
 
   std::cout << "The sum of two dice is: " << sum_of_two_dice << std::endl;
 
-  std::optional<int> previous_guess;
+  std::optional<int> previous_guess = std::nullopt;
 
   while (true) {
     std::cout << "Please input your guess (between 2 and 12): " << std::endl;
@@ -35,7 +35,7 @@ auto main() -> int
 
     std::cout << "You guessed: " << guess_number << std::endl;
 
-    if (!previous_guess) {
+    if (!previous_guess.has_value()) {
       if (guess_number < sum_of_two_dice || guess_number > sum_of_two_dice) {
         std::cout << "You guessed it wrong on the first try" << std::endl;
       } else {
