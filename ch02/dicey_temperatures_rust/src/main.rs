@@ -31,7 +31,10 @@ fn main() {
                     println!("You guessed it wrong on the first try.");
                     previous_guess = Some(guess);
                 }
-                Ordering::Equal => println!("You win!"),
+                Ordering::Equal => {
+                    println!("You win!");
+                    break;
+                }
             },
             Some(prev) => match guess.cmp(&sum_of_two_dice) {
                 Ordering::Less | Ordering::Greater => {
@@ -48,7 +51,10 @@ fn main() {
 
                     previous_guess = Some(guess);
                 }
-                Ordering::Equal => println!("You win!"),
+                Ordering::Equal => {
+                    println!("You win!");
+                    break;
+                }
             },
         }
     }
