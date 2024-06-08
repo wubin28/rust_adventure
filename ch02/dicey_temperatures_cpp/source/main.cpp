@@ -40,6 +40,7 @@ auto main() -> int
         std::cout << "You guessed it wrong on the first try" << std::endl;
       } else {
         std::cout << "You win!" << std::endl;
+        break;
       }
       previous_guess = guess_number;
     } else {
@@ -49,6 +50,7 @@ auto main() -> int
 
       if (guess_number == sum_of_two_dice) {
         std::cout << "You win!" << std::endl;
+        break;
       } else if (current_diff < previous_diff) {
         std::cout << "Hotter." << std::endl;
       } else if (current_diff > previous_diff) {
