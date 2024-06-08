@@ -22,7 +22,13 @@ fn main() {
             .expect("Failed to read line");
 
         let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
+            Ok(num) => {
+                if num < 2 || num > 12 {
+                    println!("Please type a number between 2 and 12!");
+                    continue;
+                }
+                num
+            }
             Err(_) => {
                 println!("Please type a number!");
                 continue;
