@@ -10,11 +10,12 @@ fn main() {
     println!("The sum of two dice is: {sum_of_two_dice}");
 
     let mut previous_guess: Option<u32> = None;
+    let mut guess = String::new();
 
     loop {
         println!("Please input your guess (between 2 and 12).");
 
-        let mut guess = String::new();
+        guess.clear();
 
         io::stdin()
             .read_line(&mut guess)
