@@ -37,6 +37,7 @@ public class App {
           System.out.println("You guessed it wrong on the first try");
         } else {
           System.out.println("You win!");
+          break;
         }
         previousGuess = Optional.of(guessInt);
       } else {
@@ -46,6 +47,7 @@ public class App {
 
         if (guessInt == sumOfTwoDice) {
           System.out.println("You win!");
+          break;
         } else if (currentDiff < previousDiff) {
           System.out.println("Hotter.");
         } else if (currentDiff > previousDiff) {
