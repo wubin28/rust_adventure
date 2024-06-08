@@ -30,7 +30,7 @@ auto main() -> int
       guess_number = std::stoi(guess);
     } catch (const std::invalid_argument&) {
       std::cerr << "Please type a number!" << std::endl;
-      return 1;
+      continue;
     }
 
     std::cout << "You guessed: " << guess_number << std::endl;
