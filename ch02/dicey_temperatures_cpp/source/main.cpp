@@ -33,6 +33,11 @@ auto main() -> int
       continue;
     }
 
+    if (guess_number < 2 || guess_number > 12) {
+      std::cerr << "Please type a number between 2 and 12!" << std::endl;
+      continue;
+    }
+
     std::cout << "You guessed: " << guess_number << std::endl;
 
     if (!previous_guess.has_value()) {
