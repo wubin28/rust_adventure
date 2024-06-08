@@ -27,7 +27,7 @@ public class App {
         guessInt = Integer.parseInt(guess.trim());
       } catch (NumberFormatException e) {
         System.out.println("Please type a number!");
-        return;
+        continue;
       }
 
       System.out.println("You guessed: " + guessInt);
