@@ -1,0 +1,6 @@
+[package]
+name = "exps_in_let_statement_rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
