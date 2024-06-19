@@ -5,24 +5,45 @@ use jemallocator::Jemalloc;
 #[global_allocator]
 static GLOBAL: Jemalloc = Jemalloc;
 
+// 主函数，从这里开始执行程序
 fn main() {
+    // 获取当前系统的初始内存使用情况
+    let initial_memory = get_memory_usage();
+    // 打印初始内存使用情况，单位是 KB
+    println!("Initial memory usage: {} KB", initial_memory);
+
     {
         // 进入一个新的作用域，作用域是用大括号 `{}` 包围的代码块
+        let memory_before = get_memory_usage();
+        // 打印创建字符串前的内存使用情况
+        println!("Memory before creating String: {} KB", memory_before);
 
         // 创建一个包含 100M 大字符串的自定义结构体
         let _large_string_owner = LargeStringOwner::new(100_000_000); // 100 MB
 
-        // 打印创建大字符串后消息
-        println!("Large string created.");
-    } // 这里作用域结束，`large_string_owner` 变量自动销毁，`drop` 函数被调用
+        // 获取创建大字符串后的内存使用情况
+        let memory_after = get_memory_usage();
+        // 打印创建大字符串后的内存使用情况
+        println!("Memory after creating String: {} KB", memory_after);
 
-    // 打印离开作用域后的消息
-    println!("Large string scope ended.");
+        // 使用标准库的断言宏 assert!，验证内存是否增加，否则中止程序，并打印错误信息
+        assert!(memory_after > memory_before);
+    } // 这里作用域结束，`large_string_owner` 变量自动销毁，内存应该被释放
+
+    // 获取离开作用域后的内存使用情况
+    let final_memory = get_memory_usage();
+    // 打印离开作用域后的内存使用情况
+    println!("Memory after String is out of scope: {} KB", final_memory);
+
+    // 验证最终的内存使用是否接近初始值，允许有一些小波动
+    assert!(final_memory <= initial_memory + 1_000); // 容许一点点波动
 }
-// 该程序运行后的输出为：
-// Large string created.
+// The output after running 'cargo run' should be:
+// Initial memory usage: 33 KB
+// Memory before creating String: 43 KB
+// Memory after creating String: 98347 KB
 // Dropping LargeStringOwner, releasing large string memory.
-// Large string scope ended.
+// Memory after String is out of scope: 43 KB
 
 // 自定义一个包含大字符串的结构体，并实现 Drop trait
 struct LargeStringOwner {
@@ -57,4 +78,22 @@ fn create_large_string(size: usize) -> String {
     s.extend(std::iter::repeat('A').take(size));
     // 返回这个大字符串
     s
+}
+
+// 获取当前内存使用情况的函数
+fn get_memory_usage() -> u64 {
+    // 引入 jemalloc_ctl 库中的 epoch 和 stats 模块。Rust 可以在函数定义的内部使用 use 语句引入外部模块
+    use jemalloc_ctl::{epoch, stats};
+    // 获取 epoch 模块的 MIB（管理信息块）
+    let e = epoch::mib().unwrap();
+    // 获取 stats 模块的 allocated MIB
+    let allocated = stats::allocated::mib().unwrap();
+
+    // 刷新 jemalloc 的统计信息，使得获取的内存使用情况是最新的
+    e.advance().unwrap();
+
+    // 读取当前分配的内存量，单位是字节
+    let allocated_bytes: u64 = (allocated.read().unwrap() / 1024).try_into().unwrap();
+    // 将字节转换为 KB 并返回
+    allocated_bytes
 }
