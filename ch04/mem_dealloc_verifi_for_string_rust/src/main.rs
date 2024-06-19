@@ -18,6 +18,10 @@ fn main() {
     // 打印离开作用域后的消息
     println!("Large string scope ended.");
 }
+// The output of this program after running 'cargo run' would be:
+// Large string created.
+// Dropping LargeStringOwner, releasing large string memory.
+// Large string scope ended.
 
 // 自定义一个包含大字符串的结构体，并实现 Drop trait
 struct LargeStringOwner {
