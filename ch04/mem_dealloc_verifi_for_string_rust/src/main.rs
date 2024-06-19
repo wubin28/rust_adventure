@@ -11,25 +11,28 @@ fn main() {
 
         // 创建一个包含 100M 大字符串的自定义结构体
         let _large_string_owner = LargeStringOwner::new(100_000_000); // 100 MB
-                                                                      // 打印创建大字符串后消息
+
+        // 打印创建大字符串后消息
         println!("Large string created.");
     } // 这里作用域结束，`large_string_owner` 变量自动销毁，`drop` 函数被调用
 
     // 打印离开作用域后的消息
     println!("Large string scope ended.");
 }
-// The output of this program after running 'cargo run' would be:
+// 该程序运行后的输出为：
 // Large string created.
 // Dropping LargeStringOwner, releasing large string memory.
 // Large string scope ended.
 
 // 自定义一个包含大字符串的结构体，并实现 Drop trait
 struct LargeStringOwner {
+    // 包含一个字符串字段，但允许未使用（避免编译器警告）
     #[allow(dead_code)]
     content: String,
 }
 
 impl LargeStringOwner {
+    // 为结构体实现一个新的构造函数，接受字符串大小作为参数
     fn new(size: usize) -> Self {
         // 创建一个大的字符串并初始化结构体
         LargeStringOwner {
@@ -40,6 +43,7 @@ impl LargeStringOwner {
 
 // 实现 Drop trait，添加销毁时的消息打印
 impl Drop for LargeStringOwner {
+    // 在结构体销毁时打印消息
     fn drop(&mut self) {
         println!("Dropping LargeStringOwner, releasing large string memory.");
     }
